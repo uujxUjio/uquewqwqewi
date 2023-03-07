@@ -1,0 +1,12 @@
+W__hitelist = {2484533121,4146473211,3607287611, 4146212261} 
+
+function WhitelistCheck()
+	if table.find(W__hitelist, game:GetService("Players").LocalPlayer.UserId) then
+		print(game.Players.LocalPlayer.Name.." is whitelisted.")
+	else if not table.find(W__hitelist, game:GetService("Players").LocalPlayer.UserId) then
+			game.Players.LocalPlayer:Kick("You are not whitelisted, please purchase a whitelist from uuj#1574 or CSU#7407")
+		end
+	end
+end
+
+WhitelistCheck()
