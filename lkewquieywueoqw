@@ -1,4 +1,4 @@
-W__hitelist = {2484533121,4146473211,3607287611, 4146212261} 
+W__hitelist = {2484533121,4146473211,3607287611, 4146212261, 1908727272} 
 
 function WhitelistCheck()
 	if table.find(W__hitelist, game:GetService("Players").LocalPlayer.UserId) then
