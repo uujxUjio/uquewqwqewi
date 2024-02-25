@@ -975,7 +975,7 @@ end)
 
     Aimbot_Section:NewToggle('Aimbot Autoshoot', 'Autoshoot with aimlock', function(toggle)
 	    if toggle then
-		if not Aimlock then SendNotification('Notification', 'Enabloe lock first',2) return end
+		if not Aimlock then SendNotification('Notification', 'Enable lock first',2) return end
 		if not AutoShooting then AutoShooting = true end
 	    elseif not toggle then
 		if AutoShooting then AutoShooting = false end
@@ -986,7 +986,7 @@ end)
 	if not AutoShooting then return end
 
 	pcall(function()
-	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Fire:FireServer()
+	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Fire:FireServer(game.Players[AimlockTarget].Character[Aimlockpoint].CFrame + game.Players[AimlockTarget].Character[AimPart].Velocity/AimVelocity)
 	end)
     end)
 
@@ -994,7 +994,7 @@ end)
 	if not AutoShooting then return end
 
 	pcall(function()
-	    game.Players.LocalPlayer.Character:FindFirstChild('Shotty').Fire:FireServer()
+	    game.Players.LocalPlayer.Character:FindFirstChild('Shotty').Shoot:FireServer(game.Players[AimlockTarget].Character[Aimlockpoint].CFrame + game.Players[AimlockTarget].Character[AimPart].Velocity/AimVelocity)
 	end)
     end)
 
