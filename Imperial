@@ -986,7 +986,7 @@ end)
 	if not AutoShooting then return end
 
 	pcall(function()
-	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Fire:FireServer(game.Players[AimlockTarget].Character[Aimlockpoint].CFrame + game.Players[AimlockTarget].Character[AimPart].Velocity/AimVelocity)
+	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Shoot:FireServer(game.Players[AimlockTarget].Character[Aimlockpoint].CFrame + game.Players[AimlockTarget].Character[AimPart].Velocity/AimVelocity)
 	end)
     end)
 
