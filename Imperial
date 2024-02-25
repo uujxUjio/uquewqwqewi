@@ -986,7 +986,7 @@ end)
 	if not AutoShooting then return end
 
 	pcall(function()
-	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Shoot:FireServer()
+	    game.Players.LocalPlayer.Character:FindFirstChild('Glock').Fire:FireServer()
 	end)
     end)
 
@@ -994,7 +994,7 @@ end)
 	if not AutoShooting then return end
 
 	pcall(function()
-	    game.Players.LocalPlayer.Character:FindFirstChild('Shotty').Shoot:FireServer()
+	    game.Players.LocalPlayer.Character:FindFirstChild('Shotty').Fire:FireServer()
 	end)
     end)
 
