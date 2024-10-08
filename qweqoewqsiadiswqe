@@ -1,4 +1,839 @@
+-- // Library Tables
+local library = {}
+local utility = {}
+local obelus = {
+	connections = {}
+}
+-- // Variables
+local uis = game:GetService("UserInputService")
+local cre = game:GetService("CoreGui")
+-- // Indexing
+library.__index = library
+-- // Functions
+do
+	function utility:Create(createInfo)
+		local createInfo = createInfo or {}
+		--
+		if createInfo.Type then
+			local instance = Instance.new(createInfo.Type)
+			--
+			if createInfo.Properties and typeof(createInfo.Properties) == "table" then
+				for property, value in pairs(createInfo.Properties) do
+					instance[property] = value
+				end
+			end
+			--
+			return instance
+		end
+	end
+	--
+	function utility:Connection(connectionInfo)
+		local connectionInfo = connectionInfo or {}
+		--
+		if connectionInfo.Type then
+			local connection = connectionInfo.Type:Connect(connectionInfo.Callback or function() end)
+			--
+			obelus.connections[#obelus.connections] = connection
+			--
+			return connection
+		end
+	end
+	--
+	function utility:RemoveConnection(connectionInfo)
+		local connectionInfo = connectionInfo or {}
+		--
+		if connectionInfo.Connection then
+			local found = table.find(obelus.connections, connectionInfo.Connection)
+			--
+			if found then
+				connectionInfo.Connection:Disconnect()
+				--
+				table.remove(obelus.connections, found)
+			end
+		end
+	end
+end
+-- // Ui Functions
+do
+	function library:Window(windowInfo)
+		-- // Variables
+		local info = windowInfo or {}
+		local window = {Pages = {}, Dragging = false, Delta = UDim2.new(), Delta2 = Vector3.new()}
+		-- // Utilisation
+		local screen = utility:Create({Type = "ScreenGui", Properties = {
+			Parent = cre,
+			DisplayOrder = 8888,
+			IgnoreGuiInset = true,
+			Name = "obleus",
+			ZIndexBehavior = "Global",
+			ResetOnSpawn = false
+		}})
 
--- { oden }
+        game:GetService("UserInputService").InputBegan:Connect(function(k,g)
+            if not g then 
+                if k.KeyCode == Enum.KeyCode.RightShift then 
+                    screen.Enabled = not screen.Enabled 
+                end
+            end
+        end)
+		--
+		local main = utility:Create({Type = "Frame", Properties = {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundColor3 = Color3.fromRGB(51, 51, 51),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			BorderMode = "Inset",
+			BorderSizePixel = 1,
+			Parent = screen,
+			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Size = UDim2.new(0, 516, 0, 563)
+		}})
+		--
+		local frame = utility:Create({Type = "Frame", Properties = {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundColor3 = Color3.fromRGB(12, 12, 12),
+			BorderSizePixel = 0,
+			Parent = main,
+			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Size = UDim2.new(1, -2, 1, -2),
+		}})
 
-local v0=tonumber;local v1=string.byte;local v2=string.char;local v3=string.sub;local v4=string.gsub;local v5=string.rep;local v6=table.concat;local v7=table.insert;local v8=math.ldexp;local v9=getfenv or function() return _ENV;end ;local v10=setmetatable;local v11=pcall;local v12=select;local v13=unpack or table.unpack ;local v14=tonumber;local function v15(v16,v17,...) local v18=1;local v19;v16=v4(v3(v16,5),"..",function(v30) if (v1(v30,2)==79) then local v85=0;while true do if (0==v85) then v19=v0(v3(v30,1,1));return "";end end else local v86=v2(v0(v30,16));if v19 then local v116=v5(v86,v19);v19=nil;return v116;else return v86;end end end);local function v20(v31,v32,v33) if v33 then local v87=0;local v88;while true do if (v87==(0 -0)) then v88=(v31/((5 -3)^(v32-(1 -0))))%((4 -2)^(((v33-(620 -(555 + 64))) -(v32-(932 -(857 + 74)))) + (1 -0))) ;return v88-(v88%(569 -(367 + (1266 -(68 + 997))))) ;end end else local v89=(929 -(214 + 713))^(v32-(1 + (1637 -(1523 + 114)))) ;return (((v31%(v89 + v89))>=v89) and (1 + 0 + 0)) or (877 -(282 + (1865 -(226 + 1044)))) ;end end local function v21() local v34=0 -0 ;local v35;while true do if (v34==(118 -((989 -(892 + 65)) + 85))) then return v35;end if (v34==(0 + (0 -0))) then v35=v1(v16,v18,v18);v18=v18 + 1 + 0 ;v34=1 -0 ;end end end local function v22() local v36,v37=v1(v16,v18,v18 + (3 -1) );v18=v18 + (352 -(87 + 263)) ;return (v37 * (436 -(67 + 113))) + v36 ;end local function v23() local v38,v39,v40,v41=v1(v16,v18,v18 + 3 + 0 );v18=v18 + (9 -5) ;return (v41 * 16777216) + (v40 * (48199 + 17337)) + (v39 * (1017 -761)) + v38 ;end local function v24() local v42=v23();local v43=v23();local v44=1;local v45=(v20(v43,953 -(802 + 150) ,20 + 0 ) * ((5 -3)^(57 -25))) + v42 ;local v46=v20(v43,(39 -23) + 5 ,119 -88 );local v47=((v20(v43,1029 -(915 + 82) )==(443 -(416 + 26))) and  -(2 -1)) or (1 + 0) ;if (v46==(0 -0)) then if (v45==((4215 -3028) -(1069 + 118))) then return v47 * (0 -0) ;else v46=1;v44=0 -(0 + 0) ;end elseif (v46==(651 + 1396)) then return ((v45==(0 + 0)) and (v47 * ((773 -((1060 -(814 + 45)) + 571))/(1138 -(116 + 362 + 660))))) or (v47 * NaN) ;end return v8(v47,v46-(4258 -3235) ) * (v44 + (v45/((2 + 0)^(10 + 42)))) ;end local function v25(v48) local v49=0 -0 ;local v50;local v51;while true do if (v49==(9 -6)) then return v6(v51);end if (v49==(885 -(205 + 56 + 624))) then v50=nil;if  not v48 then local v123=0 -0 ;while true do if (v123==(766 -(745 + 21))) then v48=v23();if (v48==(1080 -(1020 + 55 + 5))) then return "";end break;end end end v49=1;end if (v49==(1425 -((1424 -794) + 793))) then v51={};for v117=3 -2 , #v50 do v51[v117]=v2(v1(v3(v50,v117,v117)));end v49=(1427 -(447 + 966)) -11 ;end if (v49==(1056 -(87 + 968))) then v50=v3(v16,v18,(v18 + v48) -(1 + 0) );v18=v18 + v48 ;v49=2;end end end local v26=v23;local function v27(...) return {...},v12("#",...);end local function v28() local v52=(function() return function(v90,v91,v92,v93,v94,v95,v96,v97) local v90=(function() return 402 -(108 + 294) ;end)();local v91=(function() return;end)();local v92=(function() return;end)();while true do if (v90~= #"]") then else if (v91== #"~") then v92=(function() return v93()~=(1489 -(570 + 919)) ;end)();elseif (v91==(2 -0)) then v92=(function() return v94();end)();elseif (v91== #"asd") then v92=(function() return v95();end)();end v96[v97]=(function() return v92;end)();break;end if (v90~=0) then else local v125=(function() return 0;end)();local v126=(function() return;end)();while true do if (v125==(811 -(569 + 242))) then v126=(function() return 0;end)();while true do if (0~=v126) then else v91=(function() return v93();end)();v92=(function() return nil;end)();v126=(function() return 2 -1 ;end)();end if (1==v126) then v90=(function() return  #"{";end)();break;end end break;end end end end return v90,v91,v92,v93,v94,v95,v96,v97;end;end)();local v53=(function() return function(v98,v99,v100,v101,v102,v103,v104,v105,v106) local v107=(function() return 0 + 0 ;end)();local v98=(function() return;end)();local v99=(function() return;end)();while true do if (v107==0) then v98=(function() return 1024 -(706 + 318) ;end)();v99=(function() return nil;end)();v107=(function() return 1252 -(721 + 530) ;end)();end if (v107==1) then local v127=(function() return 0;end)();while true do if (v127~=0) then else local v128=(function() return 0;end)();while true do if (0==v128) then while true do if (v98==(1271 -(945 + 326))) then v99=(function() return v100();end)();if (v101(v99, #"/", #"}")==0) then local v179=(function() return 0;end)();local v180=(function() return;end)();local v181=(function() return;end)();local v182=(function() return;end)();local v183=(function() return;end)();while true do if (v179==1) then local v396=(function() return 0 -0 ;end)();while true do if (v396==0) then v182=(function() return nil;end)();v183=(function() return nil;end)();v396=(function() return 1 + 0 ;end)();end if ((701 -(271 + 429))~=v396) then else v179=(function() return 2 + 0 ;end)();break;end end end if (v179~=2) then else while true do if (v180~= #"-19") then else if (v101(v182, #"gha", #"asd")~= #">") then else v183[ #"asd1"]=(function() return v102[v183[ #"asd1"]];end)();end v103[v104]=(function() return v183;end)();break;end if (v180== #"{") then local v473=(function() return 1500 -(1408 + 92) ;end)();local v474=(function() return;end)();while true do if (0==v473) then v474=(function() return 0;end)();while true do if (v474~=1) then else v180=(function() return 1088 -(461 + 625) ;end)();break;end if (0==v474) then v183=(function() return {v105(),v105(),nil,nil};end)();if (v181==(0 + 0)) then local v516=(function() return 1171 -(418 + 753) ;end)();local v517=(function() return;end)();while true do if ((0 + 0)~=v516) then else v517=(function() return 0;end)();while true do if (v517==(0 + 0)) then v183[ #"91("]=(function() return v105();end)();v183[ #"asd1"]=(function() return v105();end)();break;end end break;end end elseif (v181== #" ") then v183[ #"91("]=(function() return v106();end)();elseif (v181==2) then v183[ #"-19"]=(function() return v106() -(2^(5 + 11)) ;end)();elseif (v181== #"gha") then local v524=(function() return 0;end)();local v525=(function() return;end)();while true do if (v524==0) then v525=(function() return 0;end)();while true do if (v525==0) then v183[ #"xxx"]=(function() return v106() -((1 + 1)^(545 -(406 + 123))) ;end)();v183[ #"xnxx"]=(function() return v105();end)();break;end end break;end end end v474=(function() return 1770 -(1749 + 20) ;end)();end end break;end end end if (v180==2) then local v475=(function() return 0 + 0 ;end)();local v476=(function() return;end)();while true do if (v475==(1322 -(1249 + 73))) then v476=(function() return 0;end)();while true do if ((1 + 0)==v476) then v180=(function() return  #"nil";end)();break;end if ((1145 -(466 + 679))~=v476) then else if (v101(v182, #".", #"/")== #">") then v183[2]=(function() return v102[v183[4 -2 ]];end)();end if (v101(v182,5 -3 ,1902 -(106 + 1794) )~= #":") then else v183[ #"gha"]=(function() return v102[v183[ #"gha"]];end)();end v476=(function() return 1;end)();end end break;end end end if (v180==(0 + 0)) then local v477=(function() return 0 + 0 ;end)();while true do if (v477==(2 -1)) then v180=(function() return  #"]";end)();break;end if (v477~=0) then else v181=(function() return v101(v99,5 -3 , #"91(");end)();v182=(function() return v101(v99, #".com",6);end)();v477=(function() return 115 -(4 + 110) ;end)();end end end end break;end if (v179==(584 -(57 + 527))) then local v397=(function() return 0;end)();while true do if ((1427 -(41 + 1386))==v397) then v180=(function() return 103 -(17 + 86) ;end)();v181=(function() return nil;end)();v397=(function() return 1 + 0 ;end)();end if (v397~=(1 -0)) then else v179=(function() return 2 -1 ;end)();break;end end end end end break;end end return v98,v99,v100,v101,v102,v103,v104,v105,v106;end end end end end end end;end)();local v54=(function() return function(v108,v109,v110) local v111=(function() return 0;end)();local v112=(function() return;end)();while true do if (v111~=(166 -(122 + 44))) then else v112=(function() return 0;end)();while true do if (v112~=(0 -0)) then else local v129=(function() return 0 -0 ;end)();local v130=(function() return;end)();while true do if (v129==0) then v130=(function() return 0 + 0 ;end)();while true do if (v130==0) then local v131=(function() return 0;end)();while true do if (v131~=(0 + 0)) then else v108[v109-#"|" ]=(function() return v110();end)();return v108,v109,v110;end end end end break;end end end end break;end end end;end)();local v55=(function() return {};end)();local v56=(function() return {};end)();local v57=(function() return {};end)();local v58=(function() return {v55,v56,nil,v57};end)();local v59=(function() return v23();end)();local v60=(function() return {};end)();for v68= #".",v59 do FlatIdent_7126A,Type,Cons,v21,v24,v25,v60,v68=(function() return v52(FlatIdent_7126A,Type,Cons,v21,v24,v25,v60,v68);end)();end v58[ #"gha"]=(function() return v21();end)();for v69= #">",v23() do FlatIdent_2661B,Descriptor,v21,v20,v60,v55,v69,v22,v23=(function() return v53(FlatIdent_2661B,Descriptor,v21,v20,v60,v55,v69,v22,v23);end)();end for v70= #"|",v23() do v56,v70,v28=(function() return v54(v56,v70,v28);end)();end return v58;end local function v29(v62,v63,v64) local v65=v62[66 -((45 -15) + 35) ];local v66=v62[2 + 0 ];local v67=v62[1260 -(1043 + (1458 -(485 + 759))) ];return function(...) local v71=v65;local v72=v66;local v73=v67;local v74=v27;local v75=3 -2 ;local v76= -(1213 -(323 + 889));local v77={};local v78={...};local v79=v12("#",...) -(581 -(361 + 219)) ;local v80={};local v81={};for v113=0,v79 do if (v113>=v73) then v77[v113-v73 ]=v78[v113 + (321 -(53 + 267)) ];else v81[v113]=v78[v113 + 1 + 0 ];end end local v82=(v79-v73) + (414 -(15 + 398)) ;local v83;local v84;while true do v83=v71[v75];v84=v83[983 -(18 + 964) ];if (v84<=50) then if (v84<=(90 -66)) then if ((v84<=(7 + 4)) or (1157<=674)) then if ((1316>=1278) and (v84<=5)) then if ((1082==1082) and (v84<=(2 + 0))) then if (v84<=(850 -(20 + 830))) then if v81[v83[4 -2 ]] then v75=v75 + 1 + (1189 -(442 + 747)) ;else v75=v83[129 -(116 + 10) ];end elseif (v84==(1 + 0)) then if (v81[v83[740 -(542 + 196) ]]==v83[8 -4 ]) then v75=v75 + 1 + 0 ;else v75=v83[2 + 1 ];end else local v185=0 + 0 ;local v186;local v187;local v188;while true do if (v185==(0 -0)) then v186=v83[4 -2 ];v187={v81[v186](v13(v81,v186 + (406 -(118 + 287)) ,v76))};v185=3 -2 ;end if ((1328<=4878) and (v185==1)) then v188=1121 -(118 + 1003) ;for v432=v186,v83[11 -7 ] do v188=v188 + 1 ;v81[v432]=v187[v188];end break;end end end elseif (v84<=(380 -(142 + 235))) then local v132=v83[9 -7 ];v81[v132](v13(v81,v132 + 1 + 0 ,v76));elseif (v84==(981 -((1688 -(832 + 303)) + (1370 -(88 + 858))))) then local v189=v83[1 + 1 ];local v190={};for v323=1 -0 , #v80 do local v324=0 + 0 ;local v325;while true do if (v324==(0 + 0 + 0)) then v325=v80[v323];for v460=0 + 0 , #v325 do local v461=0 + 0 ;local v462;local v463;local v464;while true do if ((4087>=1355) and ((1 + 0)==v461)) then v464=v462[4 -2 ];if (((v463==v81) and (v464>=v189)) or (590>4650)) then v190[v464]=v463[v464];v462[2 -1 ]=v190;end break;end if ((v461==(0 -0)) or (3774<=3667)) then v462=v325[v460];v463=v462[1 + 0 ];v461=(1 + 3) -3 ;end end end break;end end end else v81[v83[755 -(239 + 514) ]]=v63[v83[2 + 1 ]];end elseif ((1270<2146) and (v84<=((2126 -(766 + 23)) -(797 + 532)))) then if (v84<=((24 -19) + 1)) then local v133=v83[1 + 1 ];v81[v133]=v81[v133](v81[v133 + (2 -1) ]);elseif (v84==(1209 -(373 + 829))) then local v193=0;local v194;while true do if ((731 -(476 + (348 -93)))==v193) then v194=v83[2];v81[v194]=v81[v194]();break;end end else local v195=1130 -(369 + 761) ;local v196;local v197;local v198;while true do if (v195==(0 + 0)) then v196=v83[2 -0 ];v197=v81[v196 + 2 ];v195=1 -0 ;end if (v195==((629 -390) -(64 + 174))) then v198=v81[v196] + v197 ;v81[v196]=v198;v195=1 + 1 ;end if (v195==(2 -(0 -0))) then if (v197>0) then if (v198<=v81[v196 + (337 -(144 + 192)) ]) then local v483=216 -(42 + 174) ;while true do if (v483==0) then v75=v83[(1076 -(1036 + 37)) + 0 ];v81[v196 + 3 + 0 ]=v198;break;end end end elseif ((4563>=56) and (v198>=v81[v196 + 1 + 0 ])) then local v484=0 + 0 ;while true do if (v484==(1504 -(363 + 1141))) then v75=v83[1583 -((2303 -1120) + 397) ];v81[v196 + (8 -5) ]=v198;break;end end end break;end end end elseif (v84<=(7 + 2)) then v81[v83[2 + 0 ]]=v81[v83[3]][v83[4]];elseif ((v84>(1985 -(1913 + 62))) or (446==622)) then v81[v83[2]][v83[3]]=v83[3 + 1 + 0 ];else do return;end end elseif ((2069>1009) and (v84<=17)) then if (v84<=(36 -22)) then if ((12<4208) and (v84<=12)) then v81[v83[1482 -(641 + 839) ]]={};elseif (v84==(1946 -(565 + 1368))) then if (v83[(920 -(910 + 3)) -5 ]==v81[v83[4]]) then v75=v75 + (1662 -((3765 -2288) + 184)) ;else v75=v83[3 -0 ];end else local v201=(1684 -(1466 + 218)) + 0 ;local v202;local v203;local v204;local v205;while true do if (v201==(857 -(260 + 304 + 292))) then v76=(v204 + v202) -(1 -(1148 -(556 + 592))) ;v205=(0 + 0) -0 ;v201=2;end if (v201==(306 -(244 + 60))) then for v436=v202,v76 do v205=v205 + 1 + 0 ;v81[v436]=v203[v205];end break;end if (v201==(476 -(41 + 435))) then v202=v83[810 -(329 + 479) ];v203,v204=v74(v81[v202](v81[v202 + (1002 -(938 + 63)) ]));v201=1 + 0 ;end end end elseif (v84<=(1140 -(936 + (1043 -(174 + 680))))) then v75=v83[1 + 2 ];elseif ((v84>(1629 -(1565 + 48))) or (2990<=2980)) then local v206=0 + 0 ;local v207;local v208;local v209;local v210;while true do if (v206==2) then for v439=v207,v76 do local v440=1138 -(782 + 356) ;while true do if (v440==(267 -(176 + (312 -221)))) then v210=v210 + (1 -0) ;v81[v439]=v208[v210];break;end end end break;end if (v206==(1 + 0)) then v76=(v209 + v207) -((741 -(396 + 343)) -(1 + 0)) ;v210=(1477 -(29 + 1448)) -0 ;v206=1094 -(975 + 117) ;end if ((v206==(1875 -((1546 -(135 + 1254)) + (6472 -4754)))) or (2575>=4275)) then v207=v83[2 + (0 -0) ];v208,v209=v74(v81[v207]());v206=(2 + 1) -2 ;end end else local v211=v83[6 -4 ];local v212={v81[v211](v13(v81,v211 + (2 -1) ,v76))};local v213=(1527 -(389 + 1138)) -0 ;for v326=v211,v83[4] do v213=v213 + 1 ;v81[v326]=v212[v213];end end elseif ((v84<=(46 -26)) or (3626<=1306)) then if ((1368<3780) and (v84<=(8 + 10))) then local v139=v83[3 -1 ];v81[v139]=v81[v139](v13(v81,v139 + (2 -1) ,v83[1230 -(322 + 905) ]));elseif (v84>19) then v81[v83[613 -(602 + 9) ]]=v81[v83[1192 -(449 + 740) ]];elseif (v81[v83[874 -(826 + 46) ]]==v81[v83[951 -(245 + 702) ]]) then v75=v75 + (3 -2) ;else v75=v83[3];end elseif (v84<=(8 + (588 -(102 + 472)))) then if ((v84>(1919 -(260 + 1638))) or (3169==2273)) then local v216=440 -(382 + 58) ;local v217;local v218;local v219;local v220;while true do if ((2481<=3279) and (v216==(3 -2))) then v76=(v219 + v217) -(1 + 0 + 0) ;v220=0;v216=3 -1 ;end if (v216==(0 -0)) then v217=v83[2];v218,v219=v74(v81[v217]());v216=1;end if ((2 + 0)==v216) then for v441=v217,v76 do v220=v220 + (1206 -(902 + 303)) ;v81[v441]=v218[v220];end break;end end else local v221=v83[3 -1 ];local v222=v83[4];local v223=v221 + (4 -2) ;local v224={v81[v221](v81[v221 + (1691 -(1121 + 569)) ],v81[v223])};for v329=215 -(22 + 192) ,v222 do v81[v223 + v329 ]=v224[v329];end local v225=v224[684 -(483 + 200) ];if v225 then local v368=0;while true do if ((v368==0) or (1063<=877)) then v81[v223]=v225;v75=v83[3];break;end end else v75=v75 + (1464 -(1404 + 59)) ;end end elseif (v84==23) then v75=v83[(8 + 0) -5 ];else local v227=v83[2 -0 ];local v228=v81[v227 + (767 -(468 + 297)) ];local v229=v81[v227] + v228 ;v81[v227]=v229;if (v228>(562 -(334 + 228))) then if (v229<=v81[v227 + (3 -2) ]) then local v444=0 -0 ;while true do if (v444==0) then v75=v83[5 -2 ];v81[v227 + 3 ]=v229;break;end end end elseif (v229>=v81[v227 + 1 + 0 ]) then local v445=236 -(141 + 95) ;while true do if (v445==(0 + 0)) then v75=v83[3];v81[v227 + 3 ]=v229;break;end end end end elseif ((2314==2314) and (v84<=(94 -57))) then if (v84<=((1617 -(320 + 1225)) -(74 -32))) then if ((924>=477) and (v84<=(7 + 20))) then if ((1813<=3778) and (v84<=(68 -43))) then if (v83[2 + 0 ]<v81[v83[3 + 1 + 0 ]]) then v75=v75 + (1 -0) ;else v75=v83[3];end elseif ((4150==4150) and (v84>(16 + 10))) then v81[v83[165 -(92 + 71) ]]=v81[v83[2 + 1 ]] * v83[6 -2 ] ;else local v233=765 -(574 + 191) ;local v234;local v235;local v236;while true do if (v233==(0 + (1464 -(157 + 1307)))) then v234=v83[4 -2 ];v235=v81[v234];v233=1;end if ((432<=3007) and ((1 + (1859 -(821 + 1038)))==v233)) then v236=v81[v234 + 2 ];if ((v236>(849 -(254 + 595))) or (408>2721)) then if ((v235>v81[v234 + ((316 -189) -(55 + 71)) ]) or (3418<2497)) then v75=v83[3 -0 ];else v81[v234 + (1793 -(573 + 1217)) ]=v235;end elseif (v235<v81[v234 + (2 -1) ]) then v75=v83[1 + 2 ];else v81[v234 + 3 ]=v235;end break;end end end elseif ((1735<2169) and (v84<=(44 -16))) then local v141=939 -(714 + 225) ;local v142;while true do if (v141==0) then v142=v83[2];v81[v142]=v81[v142](v81[v142 + 1 ]);break;end end elseif ((3890>=3262) and (v84>(84 -55))) then if (v81[v83[2 -0 ]]==v81[v83[1 + 3 ]]) then v75=v75 + (1 -0) ;else v75=v83[809 -(118 + 688) ];end else v81[v83[50 -(25 + 23) ]]={};end elseif (v84<=33) then if (v84<=(7 + 24)) then if ( not v81[v83[1888 -(927 + 959) ]] or (4356>=4649)) then v75=v75 + (3 -2) ;else v75=v83[735 -(16 + 716) ];end elseif (v84>32) then v64[v83[(1 + 4) -2 ]]=v81[v83[(175 -76) -(11 + 86) ]];elseif (v83[4 -2 ]<v81[v83[289 -(175 + 110) ]]) then v75=v75 + ((1 + 1) -(2 -1)) ;else v75=v83[14 -11 ];end elseif (v84<=35) then if (v84>(1830 -(503 + 1293))) then v81[v83[5 -3 ]]=v81[v83[3 + 0 ]] * v83[1065 -(810 + 251) ] ;else v81[v83[2]]=v83[3]~=(0 + 0) ;end elseif (v84>(12 + 24)) then if (v81[v83[2 + 0 ]]~=v83[537 -(43 + 490) ]) then v75=v75 + 1 ;else v75=v83[736 -(711 + 22) ];end else v81[v83[7 -5 ]]=v29(v72[v83[862 -(240 + 619) ]],nil,v64);end elseif ((3904==3904) and (v84<=(11 + 32))) then if (v84<=(63 -23)) then if (v84<=(3 + 35)) then local v143=v83[1746 -(1344 + 400) ];v81[v143]=v81[v143](v13(v81,v143 + (406 -(255 + 150)) ,v76));elseif (v84>(31 + (1034 -(834 + 192)))) then v64[v83[1 + 2 ]]=v81[v83[2 + 0 ]];else v81[v83[8 -(2 + 4) ]]=v81[v83[3]];end elseif ((v84<=(132 -91)) or (2860>=3789)) then v81[v83[1741 -(404 + 1335) ]]= #v81[v83[409 -(183 + 223) ]];elseif ((v84==42) or (1086>4449)) then local v248=0 -0 ;local v249;local v250;local v251;local v252;while true do if ((4981>546) and ((1 + 0)==v248)) then v76=(v251 + v249) -(1 + 0) ;v252=337 -(1 + 9 + 327) ;v248=2 + 0 ;end if ((v248==2) or (2366<=8)) then for v446=v249,v76 do local v447=(523 -185) -(118 + (524 -(300 + 4))) ;while true do if (v447==0) then v252=v252 + 1 ;v81[v446]=v250[v252];break;end end end break;end if ((v248==(0 + 0)) or (2590==2864)) then v249=v83[451 -(108 + 341) ];v250,v251=v74(v81[v249](v13(v81,v249 + 1 + 0 + 0 ,v83[12 -9 ])));v248=1494 -(711 + 782) ;end end elseif ((v81[v83[3 -1 ]]~=v83[473 -(270 + (520 -321)) ]) or (2624>4149)) then v75=v75 + (363 -(112 + 250)) + 0 ;else v75=v83[3];end elseif (v84<=(1865 -(580 + 1239))) then if (v84<=(130 -86)) then v81[v83[2 + 0 ]]=v81[v83[3]] + v81[v83[1 + 3 ]] ;elseif (v84==(20 + 25)) then v81[v83[4 -2 ]]=v64[v83[2 + 1 ]];else v81[v83[2]]=v81[v83[1170 -(645 + 522) ]]%v83[1794 -(1010 + 780) ] ;end elseif (v84<=(48 + 0)) then if ((v84==(223 -176)) or (2618>=4495)) then local v256=0 -(0 + 0) ;local v257;while true do if (v256==0) then v257=v83[1838 -(1045 + 791) ];v81[v257](v13(v81,v257 + (2 -1) ,v83[(9 -5) -1 ]));break;end end else v81[v83[2 + 0 ]]=v81[v83[508 -(351 + 154) ]]%v83[4] ;end elseif (v84==(1623 -(1281 + 293))) then v81[v83[268 -(28 + 238) ]]=v83[6 -3 ];elseif (v81[v83[1561 -(1381 + 178) ]] or (2485>=3131)) then v75=v75 + 1 + 0 + 0 ;else v75=v83[3];end elseif (v84<=(61 + 14)) then if ((v84<=(27 + 35)) or (2804<=2785)) then if (v84<=(193 -137)) then if (v84<=(28 + 25)) then if (v84<=(521 -(381 + 89))) then local v147=0;local v148;while true do if ((0 + 0 + 0)==v147) then v148=v83[2];v81[v148]=v81[v148](v13(v81,v148 + 1 + 0 ,v76));break;end end elseif ((v84==(88 -36)) or (4571==3415)) then local v261=v83[(575 + 583) -(1074 + 82) ];local v262=v81[v261];local v263=v83[6 -3 ];for v336=1785 -(214 + 1570) ,v263 do v262[v336]=v81[v261 + v336 ];end elseif (v81[v83[1457 -(990 + 465) ]]~=v81[v83[2 + 2 ]]) then v75=v75 + 1 + 0 ;else v75=v83[3 + 0 + 0 ];end elseif ((v84<=(212 -158)) or (4441>4787)) then v81[v83[(3142 -(1001 + 413)) -(1668 + 58) ]]=v81[v83[629 -(512 + 114) ]][v81[v83[10 -6 ]]];elseif (v84>(113 -58)) then local v264=0;local v265;local v266;while true do if (v264==(3 -2)) then v81[v265 + 1 + 0 ]=v266;v81[v265]=v266[v83[4]];break;end if (v264==((0 -0) + 0)) then v265=v83[2 + 0 ];v266=v81[v83[10 -7 ]];v264=(2877 -(244 + 638)) -(109 + 1885) ;end end else v81[v83[1471 -(1269 + 200) ]]=v83[5 -(695 -(627 + 66)) ];end elseif (v84<=(874 -(98 + (2136 -1419)))) then if (v84<=(659 -(512 + 90))) then local v151=826 -(802 + 24) ;local v152;local v153;while true do if (v151==(0 -0)) then v152=v83[2 -0 ];v153=v81[v152];v151=1 + 0 ;end if (v151==(1 + 0)) then for v375=v152 + 1 + 0 ,v83[1 + 2 ] do v7(v153,v81[v375]);end break;end end elseif ((1920==1920) and (v84>58)) then v81[v83[5 -3 ]]= #v81[v83[9 -6 ]];else v81[v83[1 + 1 ]]=v81[v83[2 + 1 ]][v81[v83[4]]];end elseif (v84<=60) then local v154=v83[2 + 0 ];local v155={};for v171=1, #v80 do local v172=0 + 0 ;local v173;while true do if (v172==(0 + 0)) then v173=v80[v171];for v417=1433 -(797 + 636) , #v173 do local v418=0 -0 ;local v419;local v420;local v421;while true do if ((v418==(1619 -(1427 + 192))) or (647==4477)) then v419=v173[v417];v420=v419[1 + 0 ];v418=(1908 -(1665 + 241)) -1 ;end if (v418==((718 -(373 + 344)) + 0)) then v421=v419[1 + 1 ];if ((3819==3819) and (v420==v81) and (v421>=v154)) then local v505=326 -(192 + 61 + 73) ;while true do if ((v505==(1276 -(316 + 960))) or (1466>4360)) then v155[v421]=v420[v421];v419[1]=v155;break;end end end break;end end end break;end end end elseif (v84==(34 + 27)) then local v272=0 + 0 ;local v273;while true do if (v272==(0 + 0)) then v273=v83[7 -5 ];v81[v273]=v81[v273](v13(v81,v273 + ((147 + 405) -((218 -135) + 468)) ,v83[1809 -(1202 + 604) ]));break;end end else do return v81[v83[(14 -5) -7 ]];end end elseif (v84<=68) then if (v84<=(107 -42)) then if (v84<=63) then v63[v83[(1107 -(35 + 1064)) -5 ]]=v81[v83[2]];elseif ((v84>((284 + 105) -(45 + 280))) or (14>994)) then if (v83[(4 -2) + 0 ]==v81[v83[4]]) then v75=v75 + 1 + 0 + 0 ;else v75=v83[2 + 1 ];end else local v274=v83[2 + 0 ];local v275=v83[1 + 3 ];local v276=v274 + (3 -(1237 -(298 + 938))) ;local v277={v81[v274](v81[v274 + (1912 -(340 + 1571)) ],v81[v276])};for v341=1 + 0 ,v275 do v81[v276 + v341 ]=v277[v341];end local v278=v277[1773 -((2992 -(233 + 1026)) + 39) ];if v278 then v81[v276]=v278;v75=v83[8 -5 ];else v75=v75 + ((2701 -(636 + 1030)) -(125 + 909)) ;end end elseif (v84<=(2014 -(1096 + 852))) then v81[v83[2]]=v63[v83[3]];elseif ((401<=734) and (v84==(31 + 36))) then if ( not v81[v83[2 -0 ]] or (2167>=3426)) then v75=v75 + 1 + 0 ;else v75=v83[515 -(409 + 103) ];end else v81[v83[238 -(46 + 98 + 92) ]][v83[98 -(51 + 43 + 1) ]]=v83[2 + 2 ];end elseif (v84<=(1388 -(1114 + 203))) then if (v84<=69) then do return;end elseif ((764<3285) and (v84==70)) then v81[v83[(217 + 511) -(228 + 498) ]]=v81[v83[1 + 1 + 1 ]][v83[3 + 1 ]];elseif (v83[665 -(174 + 489) ]<v81[v83[10 -6 ]]) then v75=v83[1908 -(830 + 1075) ];else v75=v75 + (525 -(303 + 221)) ;end elseif (v84<=73) then if (v84>(1341 -(231 + 1038))) then local v283=v83[2 + 0 ];v81[v283](v13(v81,v283 + (1163 -(171 + 991)) ,v76));else v81[v83[2]][v83[3]]=v81[v83[4]];end elseif (v84>74) then if ((2499==2499) and (v81[v83[2]]==v83[4])) then v75=v75 + (222 -(55 + 166)) ;else v75=v83[12 -9 ];end else v81[v83[5 -3 ]]();end elseif ((v84<=(219 -131)) or (692>=4933)) then if ((v84<=81) or (3154<=2260)) then if (v84<=78) then if (v84<=(61 + 15)) then for v174=v83[6 -4 ],v83[(2 + 6) -(1 + 4) ] do v81[v174]=nil;end elseif (v84>(123 -46)) then local v286=v83[6 -4 ];v81[v286](v13(v81,v286 + (1249 -(111 + 1137)) ,v83[161 -(91 + 67) ]));else v63[v83[(30 -22) -(302 -(36 + 261)) ]]=v81[v83[1 + 1 ]];end elseif (v84<=(602 -(423 + (174 -74)))) then local v160=(1368 -(34 + 1334)) + 0 ;local v161;local v162;local v163;while true do if (v160==(0 -0)) then v161=v72[v83[2 + 1 ]];v162=nil;v160=772 -(126 + 200 + 445) ;end if ((v160==(4 -3)) or (2637>3149)) then v163={};v162=v10({},{__index=function(v383,v384) local v385=0 -0 ;local v386;while true do if ((v385==(0 -0)) or (3992<2407)) then v386=v163[v384];return v386[712 -(530 + 181) ][v386[883 -(614 + 267) ]];end end end,__newindex=function(v387,v388,v389) local v390=32 -(19 + 13) ;local v391;while true do if (v390==0) then v391=v163[v388];v391[1 -0 ][v391[4 -2 ]]=v389;break;end end end});v160=5 -3 ;end if (v160==(1 + 1)) then for v392=1 -0 ,v83[7 -(2 + 1) ] do local v393=1812 -(1293 + 519) ;local v394;while true do if ((0 -(319 -(134 + 185)))==v393) then v75=v75 + (2 -1) ;v394=v71[v75];v393=1 -0 ;end if (1==v393) then if (v394[4 -3 ]==20) then v163[v392-(2 -1) ]={v81,v394[1 + 2 ]};else v163[v392-1 ]={v63,v394[1 + 2 ]};end v80[ #v80 + 1 + 0 ]=v163;break;end end end v81[v83[2 + 0 ]]=v29(v161,v162,v64);break;end end elseif ((v84>(1176 -(709 + 387))) or (2902>4859)) then do return v81[v83[1860 -(673 + 1185) ]];end else local v289=v83[2];v81[v289](v81[v289 + ((687 -(314 + 371)) -1) ]);end elseif ((1679<4359) and (v84<=(269 -185))) then if (v84<=82) then local v164=0 -0 ;local v165;local v166;while true do if ((1913<4670) and ((1 -(968 -(478 + 490)))==v164)) then v81[v165 + 1 + 0 + 0 ]=v166;v81[v165]=v166[v83[3 + 1 ]];break;end if (v164==(0 -(1172 -(786 + 386)))) then v165=v83[1 + 1 ];v166=v81[v83[5 -2 ]];v164=1;end end elseif ((v84==((524 -362) -79)) or (2846<879)) then local v290=1880 -(446 + (2813 -(1055 + 324))) ;local v291;local v292;local v293;while true do if (v290==(1283 -(1040 + 243))) then v291=v83[2];v292=v81[v291];v290=2 -1 ;end if (v290==1) then v293=v83[1343 -(1093 + 247) ];for v448=1,v293 do v292[v448]=v81[v291 + v448 ];end break;end end else v81[v83[1849 -(559 + 1288) ]]=v81[v83[1934 -(609 + 1322) ]] * v81[v83[458 -(13 + 441) ]] ;end elseif (v84<=(321 -235)) then if (v84>(222 -(122 + 15))) then local v295=0 -0 ;local v296;while true do if (v295==(0 + 0)) then v296=v83[2];v81[v296]=v81[v296]();break;end end else v81[v83[1 + 1 ]]=v81[v83[10 -7 ]] * v81[v83[2 + 2 ]] ;end elseif ((4588==4588) and (v84==(39 + 48))) then v81[v83[(19 -14) -(9 -6) ]][v83[2 + 1 ]]=v81[v83[7 -(8 -5) ]];else local v300=v72[v83[(4 -2) + 1 ]];local v301;local v302={};v301=v10({},{__index=function(v351,v352) local v353=0 + 0 ;local v354;while true do if ((0 + 0)==v353) then v354=v302[v352];return v354[1 + 0 ][v354[2 + 0 ]];end end end,__newindex=function(v355,v356,v357) local v358=v302[v356];v358[1 + 0 ][v358[2]]=v357;end});for v360=434 -(153 + 280) ,v83[11 -7 ] do local v361=0 + 0 ;local v362;while true do if (v361==((3 -2) + 0)) then if ((v362[1]==(11 + 9)) or (347==2065)) then v302[v360-(1 + 0) ]={v81,v362[4 -1 ]};else v302[v360-(1 + 0) ]={v63,v362[5 -2 ]};end v80[ #v80 + (1050 -(572 + 477)) ]=v302;break;end if ((v361==(0 + 0)) or (1311>2697)) then v75=v75 + 1 + 0 ;v362=v71[v75];v361=1 + 0 ;end end end v81[v83[88 -(84 + 2 + 0) ]]=v29(v300,v301,v64);end elseif (v84<=94) then if (v84<=(149 -58)) then if (v84<=(65 + 24)) then if (v81[v83[2]]~=v81[v83[846 -(497 + 345) ]]) then v75=v75 + 1 + 0 ;else v75=v83[1 + 2 ];end elseif (v84==90) then v81[v83[1335 -(605 + 728) ]]=v29(v72[v83[3 + 0 ]],nil,v64);else v81[v83[3 -1 ]]=v81[v83[3]] + v81[v83[(2 -1) + 3 ]] ;end elseif ((v84<=(340 -(936 -(364 + 324)))) or (2717>3795)) then v81[v83[(5 -3) + 0 ]]();elseif ((v84>(257 -164)) or (1081<391)) then if ((v83[2 + 0 ]<v81[v83[4]]) or (121>3438)) then v75=v83[3];else v75=v75 + 1 ;end else local v307=v83[2];local v308=v81[v307];local v309=v81[v307 + (491 -((1096 -639) + 32)) ];if ((71<1949) and (v309>(0 + 0))) then if (v308>v81[v307 + 1 ]) then v75=v83[1405 -(832 + 570) ];else v81[v307 + 3 + 0 ]=v308;end elseif (v308<v81[v307 + 1 + 0 ]) then v75=v83[10 -7 ];else v81[v307 + 1 + 1 + 1 ]=v308;end end elseif (v84<=((3736 -2843) -(588 + 208))) then if ((4254==4254) and (v84<=(256 -161))) then local v167=v83[1802 -(884 + 916) ];local v168,v169=v74(v81[v167](v81[v167 + (1 -0) ]));v76=(v169 + v167) -(1 + (0 -0)) ;local v170=653 -(232 + (1278 -857)) ;for v176=v167,v76 do v170=v170 + (1890 -(1569 + (1588 -(1249 + 19)))) ;v81[v176]=v168[v170];end elseif ((3196>=2550) and (v84==(24 + 72))) then local v310=0 + 0 ;local v311;while true do if ((2456<4176) and (v310==(0 -0))) then v311=v83[(548 + 59) -(316 + 289) ];do return v13(v81,v311,v311 + v83[3] );end break;end end else local v312=0;local v313;local v314;local v315;local v316;while true do if ((v312==0) or (1150==3452)) then v313=v83[5 -3 ];v314,v315=v74(v81[v313](v13(v81,v313 + (3 -2) + 0 ,v83[(2542 -(686 + 400)) -(666 + 787) ])));v312=1;end if ((427 -(360 + 65))==v312) then for v458=v313,v76 do local v459=0 + 0 ;while true do if (v459==(254 -(79 + 175))) then v316=v316 + 1 ;v81[v458]=v314[v316];break;end end end break;end if ((1875<2258) and (v312==(1 -(0 + 0)))) then v76=(v315 + v313) -(1 + 0) ;v316=0 -0 ;v312=3 -1 ;end end end elseif ((1173>41) and (v84<=(998 -(503 + 396)))) then if (v84>(279 -(92 + (318 -(73 + 156))))) then v81[v83[3 -1 ]]=v64[v83[2 + 1 ]];else local v319=0 + 0 ;local v320;while true do if ((v319==0) or (56>=3208)) then v320=v83[(1 + 6) -5 ];v81[v320](v81[v320 + 1 ]);break;end end end elseif (v84==(14 + 86)) then v81[v83[4 -2 ]]=v83[(814 -(721 + 90)) + 0 ]~=(0 + 0 + 0) ;else for v363=v83[5 -3 ],v83[3] do v81[v363]=nil;end end v75=v75 + 1 + 0 ;end end;end return v29(v28(),{},v17)(...);end return v15("LOL!403O00028O0003043O0067616D65030A3O004765745365727669636503073O00506C6179657273030B3O004C6F63616C506C61796572030C3O004C69676874696E6750617274030E3O006D6574612O6C612O6465722O303103083O00547261736863616E03043O00442O6F7203053O00437261746503053O00436861697203053O00576564676503023O0041432O033O0042656403063O0043616D65726103053O004D6F64656C030B3O0043616D657261436861697203053O004C69676874030B3O004C6F77506F6C7950696E6503163O004D6564696F6372652047617320436F6E7461696E6572030E3O004D6574616C5F426C6F636B61646503113O004F62736572766174696F6E20546F776572030A3O005061726B42656E63682703073O004F6E65482O6F70030B3O005061696E7450612O6C657403093O00506F776572426F783203073O005363722O656E7303053O0053702O6F6C03093O0053706F746C6967687403083O00547261736843616E03043O0054722O6503093O00576174657254616E6B03133O00686F757365496E746572696F72546F696C657403043O0050617274026O00F03F026O00084003073O0066696E64706C72026O001040026O001C40026O00204003093O00636F726F7574696E6503043O0077726170030A3O006C6561766567726F7570026O00144003073O004368612O74656403073O00436F2O6E65637403053O0067726F7570026O00184003063O00737472696E672O033O0072657003013O0061024O008084CE4003093O00436861726163746572030B3O00427265616B4A6F696E747303063O004E6F636C6970026O002240027O0040030A3O0052756E5365727669636503183O00446F6E744C65616B476F644D6574686F64546F536B69647303073O006765744368617203093O0048656172746265617403043O007461736B03043O0077616974026O33C33F00DA3O0012313O00014O00650001000C3O00264B3O002E000100010004173O002E0001001263000D00023O002038000D000D0003001231000F00044O0012000D000F00022O00270001000D3O0020090002000100052O000C000D00183O001231000E00063O001231000F00073O001231001000083O001231001100093O0012310012000A3O0012310013000B3O0012310014000C3O0012310015000D3O0012310016000E3O0012310017000F3O001231001800103O001231001900113O001231001A00123O001231001B00133O001231001C00143O001231001D00153O001231001E00103O001231001F00163O001231002000173O001231002100183O001231002200193O0012310023001A3O0012310024001B3O0012310025001C3O0012310026001D3O0012310027001E3O0012310028001F3O001231002900203O001231002A00213O001231002B00073O001231002C00063O001231002D00224O0053000D002000012O00270003000D3O0012313O00233O00264B3O0040000100240004173O00400001001231000D00013O00264B000D0038000100230004173O00380001000658000E3O000100012O00143O00013O001221000E00253O0012313O00263O0004173O0040000100264B000D0031000100010004173O003100012O0065000A000A3O000658000A0001000100022O00143O00014O00143O00093O001231000D00233O0004173O0031000100264B3O0056000100270004173O00560001001231000D00013O00264B000D004C000100230004173O004C0001000658000B0002000100042O00143O00084O00143O00024O00143O00074O00143O00063O0012313O00283O0004173O0056000100264B000D0043000100010004173O00430001001263000E00293O002009000E000E002A000224000F00034O001C000E000200022O005C000E000100012O0065000B000B3O001231000D00233O0004173O0043000100264B3O006D000100260004173O006D0001001231000D00013O00264B000D005F000100230004173O005F0001000224000E00043O001221000E002B3O0012313O002C3O0004173O006D000100264B000D0059000100010004173O00590001002009000E0002002D002038000E000E002E00065800100005000100042O00143O00054O00143O00084O00143O000A4O00143O00074O004E000E00100001000224000E00063O001221000E002F3O001231000D00233O0004173O0059000100264B3O0084000100300004173O00840001001231000D00013O000E410001007D0001000D0004173O007D0001001263000E002F3O001263000F00313O002009000F000F0032001231001000333O001231001100344O0061000F00114O0003000E3O0001002009000E00020035002038000E000E00362O0050000E00020001001231000D00233O00264B000D0070000100230004173O00700001001263000E00374O005C000E000100010012313O00273O0004173O008400010004173O0070000100264B3O0095000100280004173O00950001001231000D00013O000E410001008E0001000D0004173O008E00012O0065000C000C3O000658000C0007000100022O00143O00064O00143O000B3O001231000D00233O00264B000D0087000100230004173O008700012O0027000E000B4O005C000E000100010012313O00383O0004173O009500010004173O0087000100264B3O00A7000100230004173O00A70001001231000D00013O00264B000D009D000100230004173O009D00012O0065000600063O0012313O00393O0004173O00A7000100264B000D0098000100010004173O00980001001263000E00023O002038000E000E00030012310010003A4O0012000E001000022O00270004000E4O0064000500013O001231000D00233O0004173O0098000100264B3O00BA0001002C0004173O00BA0001001231000D00013O00264B000D00B0000100230004173O00B00001000224000E00083O001221000E003B3O0012313O00303O0004173O00BA000100264B000D00AA000100010004173O00AA0001000658000E0009000100012O00143O00023O001221000E003C3O000658000E000A000100012O00143O00033O001221000E00373O001231000D00233O0004173O00AA000100264B3O00CE000100380004173O00CE0001002009000D0004003D002038000D000D002E000658000F000B000100042O00143O000C4O00143O00064O00143O00054O00143O00044O004E000D000F0001001263000D003E3O002009000D000D003F001231000E00404O001C000D0002000200062O000D00D800013O0004173O00D800012O0027000D000B4O005C000D000100010004173O00C400010004173O00D8000100264B3O0002000100390004173O000200012O000C000D6O00270007000D4O000C000D6O00270008000D4O000C000D6O00270009000D3O0012313O00243O0004173O000200012O003C8O00453O00013O000C3O00073O0003063O00697061697273030A3O00476574506C617965727303063O00737472696E6703043O0066696E6403043O004E616D6503053O006C6F776572030B3O00446973706C61794E616D65011E3O001263000100014O000500025O0020380002000200022O005F000200034O000200013O00030004173O001B0001001263000600033O0020090006000600040020090007000500050020380007000700062O001C00070002000200203800083O00062O005F000800094O003300063O000200061F0006001A000100010004173O001A0001001263000600033O0020090006000600040020090007000500070020380007000700062O001C00070002000200203800083O00062O005F000800094O003300063O000200062O0006001B00013O0004173O001B00012O003E000500023O00061500010006000100020004173O000600012O00453O00017O00053O00028O0003053O007061697273030A3O00476574506C617965727303053O007461626C6503063O00696E7365727400143O0012313O00013O00264B3O0001000100010004173O00010001001263000100024O000500025O0020380002000200032O005F000200034O000200013O00030004173O000E0001001263000600043O0020090006000600052O0005000700014O0027000800054O004E00060008000100061500010009000100020004173O000900012O0005000100014O003E000100023O0004173O000100012O00453O00017O00073O00026O00F03F028O0003043O006D61746803063O0072616E646F6D03053O007461626C6503043O0066696E6403083O00746F737472696E6700224O00058O00297O000E190001002100013O0004173O002100010012313O00024O0065000100013O00264B3O0006000100020004173O000600012O000500025O001263000300033O0020090003000300042O000500046O0029000400044O001C0003000200022O003A0001000200032O0005000200013O0006350001001B000100020004173O001B0001001263000200053O0020090002000200062O0005000300023O001263000400074O0027000500014O005F000400054O003300023O000200061E0001001D000100020004173O001D00012O00453O00013O0004173O002100012O004D000100033O0004173O002100010004173O000600010004173O002100012O00453O00017O00013O0003183O00446F6E744C65616B476F644D6574686F64546F536B69647300033O0012633O00014O005C3O000100012O00453O00017O00053O0003043O0067616D6503113O005265706C69636174656453746F7261676503053O005374616E6B030A3O004669726553657276657203053O006C6561766500073O0012633O00013O0020095O00020020095O00030020385O0004001231000200054O004E3O000200012O00453O00017O00103O0003063O00737472696E6703053O0073706C697403013O0020026O00F03F03053O006C6F77657203073O002E746172676574028O00027O00402O033O00612O6C03043O006E6F6E6503053O007461626C6503053O00636C65617203073O0066696E64706C7203063O00696E73657274030A3O002E77686974656C69737403083O00746F737472696E6701793O001263000100013O0020090001000100022O002700025O001231000300034O00120001000300020020090002000100040020380002000200052O001C00020002000200264B00020062000100060004173O00620001001231000200074O0065000300033O00264B0002004F000100070004173O004F00010020090004000100080020380004000400052O001C00040002000200264B0004002C000100090004173O002C0001001231000400074O0065000500053O00264B00040015000100070004173O00150001001231000500073O001231000600073O00264B00060019000100070004173O0019000100264B0005001E000100040004173O001E00012O00453O00013O00264B00050018000100070004173O001800012O0064000700014O004D00076O0005000700024O00070007000100022O004D000700013O001231000500043O0004173O001800010004173O001900010004173O001800010004173O004A00010004173O001500010004173O004A00010020090004000100080020380004000400052O001C00040002000200264B0004004A0001000A0004173O004A0001001231000400074O0065000500053O00264B00040033000100070004173O00330001001231000500073O001231000600073O000E4100070037000100060004173O0037000100264B00050042000100070004173O004200012O006400076O004D00075O0012630007000B3O00200900070007000C2O0005000800014O0050000700020001001231000500043O00264B00050036000100040004173O003600012O00453O00013O0004173O003600010004173O003700010004173O003600010004173O004A00010004173O003300010012630004000D3O0020090005000100082O001C0004000200022O0027000300043O001231000200043O00264B0002000C000100040004173O000C000100062O0003007800013O0004173O00780001001231000400073O00264B00040054000100070004173O005400012O0064000500014O004D00055O0012630005000B3O00200900050005000E2O0005000600014O0027000700034O004E0005000700010004173O007800010004173O005400010004173O007800010004173O000C00010004173O007800010020090002000100040020380002000200052O001C00020002000200264B000200780001000F0004173O00780001001231000200074O0065000300033O00264B00020069000100070004173O006900010012630004000D3O0020090005000100082O001C0004000200022O0027000300043O0012630004000B3O00200900040004000E2O0005000500033O001263000600104O0027000700034O005F000600074O000300043O00010004173O007800010004173O006900012O00453O00017O00093O0003043O0067616D6503113O005265706C69636174656453746F7261676503053O005374616E6B030A3O004669726553657276657203043O007069636B03043O004E616D6503013O003103093O00546578744C6162656C03043O0054657874010C3O001263000100013O002009000100010002002009000100010003002038000100010004001231000300054O000C00043O000200300B0004000600072O000C00053O0001001057000500093O0010570004000800052O004E0001000400012O00453O00017O000B3O00028O0003093O00436861726163746572030E3O0046696E6446697273744368696C6403103O0048756D616E6F6964522O6F745061727403153O0046696E6446697273744368696C644F66436C612O7303083O0048756D616E6F696403023O004B4F03083O0056656C6F6369747903093O004D61676E6974756465026O00794003063O004865616C7468003A4O00057O00061F3O000A000100010004173O000A00010012313O00013O000E410001000400013O0004173O000400012O0005000100014O005C0001000100012O00453O00013O0004173O000400012O00057O0020095O000200061F3O001F000100010004173O001F0001001231000100014O0065000200023O00264B00010010000100010004173O00100001001231000200013O00264B00020013000100010004173O00130001001231000300013O00264B00030016000100010004173O001600012O0005000400014O005C0004000100012O00453O00013O0004173O001600010004173O001300010004173O001F00010004173O0010000100203800013O0003001231000300044O001200010003000200203800023O0005001231000400064O001200020004000200203800033O0003001231000500074O001200030005000200062O0001003700013O0004173O0037000100062O0001003000013O0004173O00300001002009000400010008002009000400040009000E47000A0037000100040004173O0037000100062O0002003500013O0004173O0035000100200900040002000B00262500040037000100010004173O0037000100062O0003003900013O0004173O003900012O0005000400014O005C0004000100012O00453O00017O000C3O00028O0003043O0067616D6503073O00506C6179657273030B3O004C6F63616C506C61796572030E3O00436861726163746572412O64656403043O0057616974026O00F03F026O002440030A3O006C6561766567726F757003043O007461736B03043O0077616974029A5O99C93F00283O0012313O00014O0065000100013O00264B3O0002000100010004173O00020001001231000100013O00264B00010005000100010004173O00050001001263000200023O0020090002000200030020090002000200040020090002000200050020380002000200062O0050000200020001001231000200073O001231000300083O001231000400073O00045D000200230001001231000600014O0065000700073O000E4100010013000100060004173O00130001001231000700013O00264B00070016000100010004173O00160001001263000800094O005C0008000100010012630008000A3O00200900080008000B0012310009000C4O00500008000200010004173O002200010004173O001600010004173O002200010004173O001300010004080002001100010004173O002700010004173O000500010004173O002700010004173O000200012O00453O00017O00033O0003093O00436861726163746572030E3O00436861726163746572412O64656403043O0057616974000A4O00057O0020095O000100061F3O0008000100010004173O000800012O00057O0020095O00020020385O00032O001C3O000200022O003E3O00024O00453O00017O00093O0003053O00706169727303093O00776F726B7370616365030E3O0047657444657363656E64616E74732O033O0049734103053O004D6F64656C03043O005061727403053O007461626C6503043O0066696E6403043O004E616D65001A3O0012633O00013O001263000100023O0020380001000100032O005F000100024O00025O00020004173O00170001002038000500040004001231000700054O001200050007000200061F00050010000100010004173O00100001002038000500040004001231000700064O001200050007000200062O0005001700013O0004173O00170001001263000500073O0020090005000500082O000500065O0020090007000400092O001200050007000200062O0005001700013O0004173O001700010006153O0006000100020004173O000600012O00453O00017O00153O00028O00026O00104003103O0048756D616E6F6964522O6F745061727403063O00434672616D6503163O00412O73656D626C794C696E65617256656C6F63697479026O00F03F03093O00436861726163746572027O0040030E3O0046696E6446697273744368696C64026O00084003073O006765744368617203083O0056656C6F6369747903043O006D6174682O033O0073696E03043O007469636B026O33E33F03073O00566563746F72332O033O006E6577026O00D040030D3O0052656E6465725374652O70656403043O005761697400563O0012313O00014O0065000100063O00264B3O0009000100020004173O000900010020090007000100030010570007000400060020090007000100030010570007000500050004173O0055000100264B3O0017000100060004173O0017000100061F0002000E000100010004173O000E00012O00453O00014O000500076O005C0007000100012O0005000700013O00061F00070014000100010004173O001400012O00453O00014O0005000700013O0020090003000700070012313O00083O00264B3O0025000100080004173O0025000100061F0003001C000100010004173O001C00012O00453O00013O002038000700030009001231000900034O00120007000900022O0027000400073O00061F00040023000100010004173O002300012O00453O00013O0020090005000200050012313O000A3O00264B3O0036000100010004173O003600012O0005000700023O00061F0007002B000100010004173O002B00012O00453O00013O0012630007000B4O00070007000100022O0027000100073O00061F00010031000100010004173O003100012O00453O00013O002038000700010009001231000900034O00120007000900022O0027000200073O0012313O00063O00264B3O00020001000A0004173O0002000100200900070001000300200900060007000400200900070001000300200900080004000400200900090003000300200900090009000C001263000A000D3O002009000A000A000E001263000B000F4O0016000B00014O0033000A3O000200202E000A000A00102O005500090009000A2O002C000800080009001057000700040008001263000700113O002009000700070012001231000800083O001231000900083O001231000A00084O00120007000A000200201B0007000700130010570002000500072O0005000700033O0020090007000700140020380007000700152O00500007000200010012313O00023O0004173O000200012O00453O00017O00",v9(),...);
+		--
+		local draggingButton = utility:Create({Type = "TextButton", Properties = {
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Parent = frame,
+			Position = UDim2.new(0, 0, 0, 0),
+			Size = UDim2.new(1, 0, 0, 24),
+			Text = ""
+		}})
+		--
+		local title = utility:Create({Type = "TextLabel", Properties = {
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Parent = frame,
+			Position = UDim2.new(0, 9, 0, 6),
+			Size = UDim2.new(1, -16, 0, 15),
+			Font = "Code",
+			RichText = true,
+			Text = info.Name or info.name or "obleus",
+			TextColor3 = Color3.fromRGB(142, 142, 142),
+			TextStrokeTransparency = 0.5,
+			TextSize = 13,
+			TextXAlignment = "Left"
+		}})
+		--
+		local accent = utility:Create({Type = "Frame", Properties = {
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Parent = frame,
+			Position = UDim2.new(0, 8, 0, 22),
+			Size = UDim2.new(1, -16, 0, 2)
+		}})
+		--
+		local accentFirst = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(170, 85, 235),
+			BorderSizePixel = 0,
+			Parent = accent,
+			Position = UDim2.new(0, 0, 0, 0),
+			Size = UDim2.new(1, 0, 0, 1)
+		}})
+		--
+		local accentSecond = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(101, 51, 141),
+			BorderSizePixel = 0,
+			Parent = accent,
+			Position = UDim2.new(0, 0, 0, 1),
+			Size = UDim2.new(1, 0, 0, 1)
+		}})
+		--
+		local tabs = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(1, 1, 1),
+			BorderSizePixel = 0,
+			Parent = frame,
+			Position = UDim2.new(0, 8, 0, 29),
+			Size = UDim2.new(1, -16, 0, 30)
+		}})
+		--
+		local tabsInline = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(1, 1, 1),
+			BorderSizePixel = 0,
+			Parent = tabs,
+			Position = UDim2.new(0, 0, 0, 0),
+			Size = UDim2.new(1, -1, 1, 0)
+		}})
+		--
+		utility:Create({Type = "UIListLayout", Properties = {
+			Padding = UDim.new(0, 0),
+			Parent = tabsInline,
+			FillDirection = "Horizontal"
+		}})
+		--
+		local pagesHolder = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(51, 51, 51),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			BorderMode = "Inset",
+			BorderSizePixel = 1,
+			Parent = frame,
+			Position = UDim2.new(0, 8, 0, 65),
+			Size = UDim2.new(1, -16, 1, -76)
+		}})
+		--
+		local pagesFrame = utility:Create({Type = "Frame", Properties = {
+			BackgroundColor3 = Color3.fromRGB(13, 13, 13),
+			BorderSizePixel = 0,
+			Parent = pagesHolder,
+			Position = UDim2.new(0, 1, 0, 1),
+			Size = UDim2.new(1, -2, 1, -2)
+		}})
+		--
+		local pagesFolder = utility:Create({Type = "Folder", Properties = {
+			Parent = pagesFrame
+		}})
+		-- // Functions / Connections
+		local connection = utility:Connection({Type = draggingButton.InputBegan, Callback = function(Input)
+			if not window.Dragging and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				window.Dragging = true
+				window.Delta = main.Position
+				window.Delta2 = Input.Position
+			end
+		end})
+		--
+		local connection2 = utility:Connection({Type = uis.InputEnded, Callback = function(Input)
+			if window.Dragging and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				window.Dragging = false
+				window.Delta = UDim2.new()
+				window.Delta2 = Vector3.new()
+			end
+		end})
+		--
+		local connection3 = utility:Connection({Type = uis.InputChanged, Callback = function(Input)
+			if window.Dragging then
+				local Delta = Input.Position - window.Delta2
+				main.Position = UDim2.new(window.Delta.X.Scale, window.Delta.X.Offset + Delta.X, window.Delta.Y.Scale, window.Delta.Y.Offset + Delta.Y)
+			end
+		end})
+		-- // Nested Functions
+		function window:RefreshTabs()
+			for index, page in pairs(window.Pages) do
+				page.Tab.Size = UDim2.new(1 / (#window.Pages), 0, 1, 0)
+			end
+		end
+		--
+		function window:Page(pageInfo)
+			-- // Variables
+			local info = pageInfo or {}
+			local page = {Open = false}
+			-- // Utilisation
+			local tab = utility:Create({Type = "Frame", Properties = {
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = tabsInline,
+				Size = UDim2.new(1, 0, 1, 0)
+			}})
+			--
+			local tabButton = utility:Create({Type = "TextButton", Properties = {
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = tab,
+				Position = UDim2.new(0, 0, 0, 0),
+				Size = UDim2.new(1, 0, 1, 0)
+			}})
+			--
+			local tabInline = utility:Create({Type = "Frame", Properties = {
+				BackgroundColor3 = Color3.fromRGB(41, 41, 41),
+				BorderSizePixel = 0,
+				Parent = tab,
+				Position = UDim2.new(0, 1, 0, 1),
+				Size = UDim2.new(1, -1, 1, -2)
+			}})
+			--
+			local tabInlineGradient = utility:Create({Type = "Frame", Properties = {
+				BackgroundColor3 = Color3.fromRGB(41, 41, 41),
+				BorderSizePixel = 0,
+				Parent = tabInline,
+				Position = UDim2.new(0, 1, 0, 1),
+				Size = UDim2.new(1, -2, 1, -2)
+			}})
+			--
+			local tabGradient = utility:Create({Type = "UIGradient", Properties = {
+				Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))}),
+				Rotation = 90,
+				Parent = tabInlineGradient
+			}})
+			--
+			local tabTitle = utility:Create({Type = "TextLabel", Properties = {
+				AnchorPoint = Vector2.new(0, 0.5),
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = tabInlineGradient,
+				Position = UDim2.new(0, 4, 0.5, 0),
+				Size = UDim2.new(1, -8, 0, 15),
+				Font = "Code",
+				RichText = true,
+				Text = info.Name or info.name or "tab",
+				TextColor3 = Color3.fromRGB(142, 142, 142),
+				TextStrokeTransparency = 0.5,
+				TextSize = 13,
+				TextXAlignment = "Center"
+			}})
+			--
+			local pageHolder = utility:Create({Type = "Frame", Properties = {
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = pagesFolder,
+				Position = UDim2.new(0, 10, 0, 10),
+				Size = UDim2.new(1, -20, 1, -20),
+				Visible = false
+			}})
+			--
+			local leftHolder = utility:Create({Type = "Frame", Properties = {
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = pageHolder,
+				Position = UDim2.new(0, 0, 0 ,0),
+				Size = UDim2.new(0.5, -5, 1, 0)
+			}})
+			--
+			local rightHolder = utility:Create({Type = "Frame", Properties = {
+				AnchorPoint = Vector2.new(1, 0),
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Parent = pageHolder,
+				Position = UDim2.new(1, 0, 0 ,0),
+				Size = UDim2.new(0.5, -5, 1, 0)
+			}})
+			-- // Functions / Connections
+			utility:Connection({Type = tabButton.MouseButton1Down, Callback = function()
+				if not page.open then
+					for index, other_page in pairs(window.Pages) do
+						if other_page ~= page then
+							other_page:Turn(false)
+						end
+					end
+				end
+				--
+				page:Turn(true)
+			end})
+			-- // Nested Functions
+			function page:Turn(state)
+				tabTitle.TextColor3 = state and Color3.fromRGB(170, 85, 235) or Color3.fromRGB(142, 142, 142)
+				tabGradient.Color = state and ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(155, 155, 155))}) or ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))})
+				--
+				page.PageHolder.Visible = state
+				page.Open = state
+			end
+			--
+			function page:Section(sectionInfo)
+				-- // Variables
+				local info = sectionInfo or {}
+				local section = {}
+				-- // Utilisation
+				local sectionMain = utility:Create({Type = "Frame", Properties = {
+					BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+					BorderColor3 = Color3.fromRGB(13, 13, 13),
+					BorderMode = "Inset",
+					BorderSizePixel = 1,
+					Parent = page[((info.Side and info.Side:lower() == "right") or (info.side and info.side:lower() == "right")) and "Right" or "Left"],
+					Position = UDim2.new(0, 0, 0, 0),
+					Size = UDim2.new(1, 0, 0, (info.Size or info.size or 200) + 4)
+				}})
+				--
+				local sectionFrame = utility:Create({Type = "Frame", Properties = {
+					BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+					BorderSizePixel = 0,
+					Parent = sectionMain,
+					Position = UDim2.new(0, 1, 0, 1),
+					Size = UDim2.new(1, -2, 1, -2)
+				}})
+				--
+				local sectionTitle = utility:Create({Type = "TextLabel", Properties = {
+					AnchorPoint = Vector2.new(0, 0.5),
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Parent = sectionMain,
+					Position = UDim2.new(0, 13, 0, 0),
+					Size = UDim2.new(1, -26, 0, 15),
+					Font = "Code",
+					RichText = true,
+					Text = info.Name or info.name or "new section",
+					TextColor3 = Color3.fromRGB(205, 205, 205),
+					TextStrokeTransparency = 0.5,
+					TextSize = 13,
+					TextXAlignment = "Left",
+					ZIndex = 2
+				}})
+				--
+				local sectionTitleLine = utility:Create({Type = "Frame", Properties = {
+					BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+					BorderSizePixel = 0,
+					Parent = sectionMain,
+					Position = UDim2.new(0, 9, 0, 0),
+					Size = UDim2.new(0, sectionTitle.TextBounds.X + 6, 0, 1)
+				}})
+				--
+				local sectionScrolling = utility:Create({Type = "Frame", Properties = {
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Parent = sectionMain,
+					Position = UDim2.new(0, 1, 0, 1),
+					Size = UDim2.new(1, -2, 1, -2),
+					Visible = false
+				}})
+				--
+				local sectionScrollingBar = utility:Create({Type = "Frame", Properties = {
+					AnchorPoint = Vector2.new(1, 0),
+					BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+					BorderSizePixel = 0,
+					Parent = sectionScrolling,
+					Position = UDim2.new(1, 0, 0, 0),
+					Size = UDim2.new(0, 5, 1, 0),
+					ZIndex = 3
+				}})
+				--
+				local sectionScrollingGradient = utility:Create({Type = "ImageLabel", Properties = {
+					AnchorPoint = Vector2.new(0, 1),
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Parent = sectionScrolling,
+					Position = UDim2.new(0, 0, 1, 0),
+					Size = UDim2.new(1, 0, 0, 20),
+					ZIndex = 2,
+					Image = "rbxassetid://7783533907",
+					ImageTransparency = 0,
+					ImageColor3 = Color3.fromRGB(19, 19, 19),
+					ScaleType = "Stretch"
+				}})
+				--
+				local sectionContentHolder = utility:Create({Type = "ScrollingFrame", Properties = {
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Parent = sectionFrame,
+					Position = UDim2.new(0, 0, 0, 0),
+					Size = UDim2.new(1, 0, 1, 0),
+					ZIndex = 4,
+					AutomaticCanvasSize = "Y",
+					BottomImage = "rbxassetid://7783554086",
+					CanvasSize = UDim2.new(0, 0, 0, 0),
+					MidImage = "rbxassetid://7783554086",
+					ScrollBarImageColor3 = Color3.fromRGB(65, 65, 65),
+					ScrollBarThickness = 4,
+					TopImage = "rbxassetid://7783554086",
+					VerticalScrollBarInset = "ScrollBar"
+				}})
+				--
+				utility:Create({Type = "UIListLayout", Properties = {
+					Padding = UDim.new(0, 5),
+					Parent = sectionContentHolder,
+					FillDirection = "Vertical"
+				}})
+				--
+				local sectionInline = utility:Create({Type = "Frame", Properties = {
+					BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+					BorderSizePixel = 0,
+					Parent = sectionContentHolder,
+					Position = UDim2.new(0, 1, 0, 1),
+					Size = UDim2.new(1, 0, 0, 10)
+				}})
+				-- // Functions / Connections
+				-- // Nested Functions
+				function section:Update()
+					if sectionContentHolder.AbsoluteCanvasSize.Y > ((info.Size or info.size or 200) + 4) then
+						sectionScrolling.Visible = true
+					else
+						sectionScrolling.Visible = false
+					end
+				end
+				--
+				function section:Label(labelInfo)
+					-- // Variables
+					local info = labelInfo or {}
+					local label = {}
+					-- // Utilisation
+					local contentHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sectionContentHolder,
+						Size = UDim2.new(1, 0, 0, 14)
+					}})
+					--
+					local labelTitle = utility:Create({Type = "TextLabel", Properties = {
+						AnchorPoint = Vector2.new(0, 0),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Size = UDim2.new(1, -(info.Offset or 36), 1, 0),
+						Position = UDim2.new(0, info.Offset or 36, 0, 0),
+						Font = "Code",
+						RichText = true,
+						Text = info.Name or info.name or info.Text or info.text or "new label",
+						TextColor3 = Color3.fromRGB(180, 180, 180),
+						TextStrokeTransparency = 0.5,
+						TextSize = 13,
+						TextXAlignment = "Left"
+					}})
+					-- // Functions / Connections
+					-- // Nested Functions
+					function label:Remove()
+						contentHolder:Remove()
+						label = nil
+						--
+						section:Update()
+					end
+					-- // Returning + Other
+					section:Update()
+					--
+					return label
+				end
+				--
+				function section:Toggle(toggleInfo)
+					-- // Variables
+					local info = toggleInfo or {}
+					local toggle = {
+						state = (info.Default or info.default or info.Def or info.def or false),
+						callback = (info.Callback or info.callback or function() end)
+					}
+					-- // Utilisation
+					local contentHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sectionContentHolder,
+						Size = UDim2.new(1, 0, 0, 14)
+					}})
+					--
+					local toggleButton = utility:Create({Type = "TextButton", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(1, 0, 1, 0),
+						Text = ""
+					}})
+					--
+					local toggleTitle = utility:Create({Type = "TextLabel", Properties = {
+						AnchorPoint = Vector2.new(0, 0),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Size = UDim2.new(1, -36, 1, 0),
+						Position = UDim2.new(0, 36, 0, 0),
+						Font = "Code",
+						RichText = true,
+						Text = info.Name or info.name or info.Text or info.text or "new toggle",
+						TextColor3 = Color3.fromRGB(180, 180, 180),
+						TextStrokeTransparency = 0.5,
+						TextSize = 13,
+						TextXAlignment = "Left"
+					}})
+					--
+					local toggleFrame = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(1, 1, 1),
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 16, 0, 2),
+						Size = UDim2.new(0, 10, 0, 10)
+					}})
+					--
+					local toggleInlineGradient = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = toggle.state and Color3.fromRGB(170, 85, 235) or Color3.fromRGB(63, 63, 63),
+						BorderSizePixel = 0,
+						Parent = toggleFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local toggleGradient = utility:Create({Type = "UIGradient", Properties = {
+						Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(125, 125, 125))}),
+						Rotation = 90,
+						Parent = toggleInlineGradient
+					}})
+					-- // Functions / Connections
+					local connection = utility:Connection({Type = toggleButton.MouseButton1Down, Callback = function()
+						toggle.state = not toggle.state
+						toggleInlineGradient.BackgroundColor3 = toggle.state and Color3.fromRGB(170, 85, 235) or Color3.fromRGB(63, 63, 63)
+						toggle.callback(toggle.state)
+					end})
+					-- // Nested Functions
+					function toggle:Remove()
+						contentHolder:Remove()
+						toggle = nil
+						--
+						utility:RemoveConnection({Connection = connection})
+						connection = nil
+						--
+						section:Update()
+					end
+					--
+					function toggle:Get()
+						return toggle.state
+					end
+					--
+					function toggle:Set(value)
+						if typeof(value) == "boolean" then
+							toggle.state = value
+						end
+					end
+					-- // Returning + Other
+					section:Update()
+					--
+					return toggle
+				end
+				--
+				function section:Button(buttonInfo)
+					-- // Variables
+					local info = buttonInfo or {}
+					local button = {
+						callback = (info.Callback or info.callback or function() end)
+					}
+					-- // Utilisation
+					local contentHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sectionContentHolder,
+						Size = UDim2.new(1, 0, 0, 20)
+					}})
+					--
+					local buttonButton = utility:Create({Type = "TextButton", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(1, 0, 1, 0),
+						Text = ""
+					}})
+					--
+					local buttonFrame = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+						BorderColor3 = Color3.fromRGB(1, 1, 1),
+						BorderMode = "Inset",
+						BorderSizePixel = 1,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 16, 0, 0),
+						Size = UDim2.new(1, -32, 1, 0)
+					}})
+					--
+					local buttonInline = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+						BorderSizePixel = 0,
+						Parent = buttonFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local buttonTitle = utility:Create({Type = "TextLabel", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Size = UDim2.new(1, -32, 1, 0),
+						Position = UDim2.new(0, 16, 0, 0),
+						Font = "Code",
+						RichText = true,
+						Text = info.Name or info.name or info.Text or info.text or "new button",
+						TextColor3 = Color3.fromRGB(180, 180, 180),
+						TextStrokeTransparency = 0.5,
+						TextSize = 13,
+						TextXAlignment = "Center"
+					}})
+					--
+					-- // Functions / Connections
+					local connection = utility:Connection({Type = buttonButton.MouseButton1Down, Callback = function()
+						button.callback()
+					end})
+					-- // Nested Functions
+					function button:Remove()
+						contentHolder:Remove()
+						button = nil
+						--
+						utility:RemoveConnection({Connection = connection})
+						connection = nil
+						--
+						section:Update()
+					end
+					-- // Returning + Other
+					section:Update()
+					--
+					return button
+				end
+				--
+				function section:Slider(sliderInfo)
+					-- // Variables
+					local info = sliderInfo or {}
+					local slider = {
+						state = (info.Default or info.default or info.Def or info.def or 0),
+						min = (info.Minimum or info.minimum or info.Min or info.min or 0),
+						max = (info.Maximum or info.maximum or info.Max or info.max or 10),
+						decimals = (1 / (info.Decimals or info.decimals or info.Tick or info.tick or 0.25)),
+						suffix = (info.Suffix or info.suffix or info.Ending or info.ending or ""),
+						callback = (info.Callback or info.callback or function() end),
+						holding = false
+					}
+					-- // Utilisation
+					local contentHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sectionContentHolder,
+						Size = UDim2.new(1, 0, 0, (info.Name or info.name or info.Text or info.text) and 24 or 10)
+					}})
+					--
+					local sliderButton = utility:Create({Type = "TextButton", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(1, 0, 1, 0),
+						Text = ""
+					}})
+					--
+					if (info.Name or info.name or info.Text or info.text) then
+						local sliderTitle = utility:Create({Type = "TextLabel", Properties = {
+							AnchorPoint = Vector2.new(0, 0),
+							BackgroundTransparency = 1,
+							BorderSizePixel = 0,
+							Parent = contentHolder,
+							Size = UDim2.new(1, -16, 0, 14),
+							Position = UDim2.new(0, 16, 0, 0),
+							Font = "Code",
+							RichText = true,
+							Text = (info.Name or info.name or info.Text or info.text),
+							TextColor3 = Color3.fromRGB(180, 180, 180),
+							TextStrokeTransparency = 0.5,
+							TextSize = 13,
+							TextXAlignment = "Left"
+						}})
+					end
+					--
+					local sliderFrame = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(1, 1, 1),
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 16, 0, (info.Name or info.name or info.Text or info.text) and 14 or 0),
+						Size = UDim2.new(1, -32, 0, 10)
+					}})
+					--
+					local sliderInlineGradient = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(63, 63, 63),
+						BorderSizePixel = 0,
+						Parent = sliderFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local sliderGradient = utility:Create({Type = "UIGradient", Properties = {
+						Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(125, 125, 125))}),
+						Rotation = 90,
+						Parent = sliderInlineGradient
+					}})
+					--
+					local sliderSlideHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sliderFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local sliderSlide = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(170, 85, 235),
+						BorderSizePixel = 0,
+						Parent = sliderSlideHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(0.5, 0, 1, 0)
+					}})
+					--
+					local sliderGradient = utility:Create({Type = "UIGradient", Properties = {
+						Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(125, 125, 125))}),
+						Rotation = 90,
+						Parent = sliderSlide
+					}})
+					--
+					local sliderValue = utility:Create({Type = "TextLabel", Properties = {
+						AnchorPoint = Vector2.new(0.5, 0.25),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sliderSlide,
+						Size = UDim2.new(0, 10, 0, 14),
+						Position = UDim2.new(1, 0, 0.5, 0),
+						Font = "Code",
+						RichText = true,
+						Text = tostring(slider.state) .. tostring(slider.suffix),
+						TextColor3 = Color3.fromRGB(180, 180, 180),
+						TextStrokeTransparency = 0.5,
+						TextSize = 13,
+						TextXAlignment = "Left"
+					}})
+					-- // Functions / Connections
+					local connection = utility:Connection({Type = sliderButton.MouseButton1Down, Callback = function()
+						slider.holding = true
+						slider:Refresh()
+					end})
+					--
+					local connection2 = utility:Connection({Type = uis.InputEnded, Callback = function()
+						slider.holding = false
+					end})
+					--
+					local connection3 = utility:Connection({Type = uis.InputChanged, Callback = function()
+						if slider.holding then
+							slider:Refresh()
+						end
+					end})
+					-- // Nested Functions
+					function slider:Remove()
+						contentHolder:Remove()
+						slider = nil
+						--
+						utility:RemoveConnection({Connection = connection})
+						connection = nil
+						utility:RemoveConnection({Connection = connection2})
+						connection2 = nil
+						utility:RemoveConnection({Connection = connection3})
+						connection3 = nil
+						--
+						section:Update()
+					end
+					--
+					function slider:Get()
+						return slider.state
+					end
+					--
+					function slider:Set(value)
+						slider.state = math.clamp(math.round(value * slider.decimals) / slider.decimals, slider.min, slider.max)
+						sliderSlide.Size = UDim2.new(1 - ((slider.max - slider.state) / (slider.max - slider.min)), 0, 1, 0)
+						sliderValue.Text = tostring(slider.state) .. tostring(slider.suffix)
+						pcall(slider.callback, slider.state)
+					end
+					--
+					function slider:Refresh()
+						if slider.holding then
+							local mouseLocation = uis:GetMouseLocation()
+							slider:Set(math.clamp(math.floor((slider.min + (slider.max - slider.min) * (math.clamp(mouseLocation.X - sliderSlide.AbsolutePosition.X, 0, sliderSlideHolder.AbsoluteSize.X) / sliderSlideHolder.AbsoluteSize.X)) * slider.decimals) / slider.decimals, slider.min, slider.max))
+						end
+					end
+					-- // Returning + Other
+					section:Update()
+					slider:Set(slider.state)
+					--
+					return slider
+				end
+				-- // Returning + Other
+				return section
+			end
+			-- // Returning + Other
+			page.Tab = tab
+			page.PageHolder = pageHolder
+			page.Left = leftHolder
+			page.Right = rightHolder
+			--
+			window.Pages[#window.Pages + 1] = page
+			window:RefreshTabs()
+			--
+			return page
+		end
+		-- // Returning
+		return window
+	end
+end
+-- // Main
+local window = library:Window({name = "<font color=\"#AA55EB\">elixer.sol</font> | Jul 7 2021"})
+
+
+-- // Returning
+return library, utility, obelus
