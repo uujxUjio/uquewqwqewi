@@ -832,7 +832,6 @@ do
 	end
 end
 -- // Main
-local window = library:Window({name = "<font color=\"#AA55EB\">elixer.sol</font> | Jul 7 2021"})
 
 
 -- // Returning
